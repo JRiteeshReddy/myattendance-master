@@ -53,47 +53,87 @@ export const calculateClassesToAttend = (attended: number, total: number): numbe
  */
 export const getAttendanceMessage = (percentage: number): string => {
   const lowMessages = [
-    "Did you forget the university is still in session?",
-    "Your attendance is so low, the professor might not recognize you at finals.",
-    "I see empty chairs in your future. Many of them.",
-    "Paying tuition to NOT attend classes? Bold financial strategy.",
-    "Your professor is starting to think you're a myth.",
-    "The campus squirrels have seen more lectures than you.",
-    "Plot twist: You're supposed to attend the classes you paid for.",
-    "Maybe try setting an alarm? Just a thought.",
-    "Your attendance is like my motivation to exercise: practically non-existent.",
-    "Your chair is getting cold and lonely."
+    "Bro, your attendance is lower than my phone battery at 2%.",
+    "You skipping classes like it's a cardio workout—relax, no one's giving you a medal.",
+    "At this point, even the benches forgot how you look.",
+    "The professor asked who's missing, and I said 'common sense'—turns out I meant you.",
+    "Are you majoring in Houdini? Because you vanish every time there's a class.",
+    "Attendance sheet's starting to think you're a fictional character.",
+    "NASA called. They wanna study how fast you escape class.",
+    "One more absence and they'll name a holiday after you.",
+    "Are you allergic to education, or is it just the chairs?",
+    "Your attendance is giving 'guest appearance' vibes.",
+    "Bro, blink twice if you've forgotten where the classroom is.",
+    "Skipping class won't make you mysterious; it just makes you unemployed sooner.",
+    "Attendance so low, even AI struggles to predict when you'll show up.",
+    "You're missing classes like you're practicing for a disappearing act on India's Got Talent.",
+    "Class isn't a buffet, you can't just come once in a while when you feel like it.",
+    "Are you secretly the teacher's ex? Why else avoid them this hard?",
+    "Your attendance graph looks like a heart rate monitor of a dead person.",
+    "The only subject you're passing is bunking techniques.",
+    "You have 100% attendance… in the canteen.",
+    "Even WiFi connects more often than you do.",
+    "Show up to class, or should we start tagging you as 'Missing Person'?",
+    "Did you enroll in invisibility studies? Because I can't see you in class.",
+    "If bunking was a degree, you'd be valedictorian.",
+    "Bro, your attendance percentage and my trust issues are competing.",
+    "You skipping more classes than Spotify skips ads.",
+    "Hey, at least attend once—so we know you're still alive.",
+    "Attendance sheet looks cleaner without your name, but damn, the teachers notice.",
+    "You've missed so much, even Google Maps can't redirect you to the syllabus.",
+    "Come to class; it's free. Unlike therapy, which you'll need if you fail.",
+    "Even ghosts haunt classrooms more often than you."
   ];
 
   const mediumMessages = [
-    "Half-attending is like half-reading a book. You miss all the good parts.",
-    "You're playing attendance roulette and the odds aren't looking great.",
-    "Not terrible, not great. The academic version of 'meh'.",
-    "The glass is half full... of absences.",
-    "Your attendance is as average as a beige wall.",
-    "Showing up is half the battle. You're currently losing.",
-    "Your professor knows your name but not your face.",
-    "Living life on the attendance edge, I see.",
-    "Schrödinger's student: simultaneously in and not in class.",
-    "I've seen better attendance at optional meetings."
+    "Bro, you attend just enough to keep the teachers confused whether to fail you or not.",
+    "Your attendance is like a cliffhanger—no one knows if you'll survive till the end.",
+    "You show up just enough to say 'I exist,' but not enough to learn anything.",
+    "You're playing Russian Roulette with attendance—one more bunk and boom!",
+    "Your attendance isn't low, it's on life support.",
+    "75% attendance? That's not consistency, that's luck.",
+    "Teachers see your attendance and think you're speedrunning the course.",
+    "You're not a regular student, you're a seasonal event.",
+    "Your attendance graph looks like Bitcoin—unstable and stressing everyone out.",
+    "Bro, your attendance is a thriller movie—keeps everyone on edge till the climax.",
+    "You got the teachers praying harder for your attendance than their own salaries.",
+    "You're walking the fine line between student and visitor.",
+    "Your attendance says 'I'm here for vibes, not degrees'.",
+    "You attend like you're collecting limited-edition badges—not for education.",
+    "Every class you attend feels like a surprise appearance.",
+    "Your attendance is like a power cut—on and off, and unpredictable.",
+    "Even the attendance sheet sighs when you show up—'Oh, finally decided to join us?'",
+    "You're the human embodiment of bare minimum.",
+    "You're not chasing a degree, you're chasing that 0.1% margin to survive.",
+    "Your attendance is like WhatsApp blue ticks—seen but no action."
   ];
 
   const highMessages = [
-    "Wow, you actually go to the classes you paid for. Revolutionary.",
-    "Teacher's pet alert! But hey, at least you're learning something.",
-    "Front row energy. I respect the commitment.",
-    "Your seat has a permanent imprint of your behind by now.",
-    "Do you live on campus or just never leave?",
-    "The projector misses you when you're gone (which isn't often).",
-    "You're the 'actually, I have a question' student, aren't you?",
-    "Congratulations on doing the bare minimum required to pass.",
-    "Your professor probably uses your name as an example of good attendance.",
-    "You've perfected the art of showing up. Now try participating."
+    "Bro, you attending like there's gold hidden in the classroom.",
+    "Your attendance is so high, even the teacher's attendance looks lazy.",
+    "Relax, no one's giving a loyalty card for 80%+ attendance.",
+    "You attending every class like it's a Netflix series finale.",
+    "Are you planning to marry the syllabus or what?",
+    "Your attendance is higher than my phone screen time, and that's saying something.",
+    "Bro, even chairs feel more rested than you.",
+    "You don't need a degree, you need a lifetime achievement award in attending.",
+    "You show up more than the WiFi signal.",
+    "You attend classes like you're earning attendance cashback.",
+    "Your attendance is proof dedication can be unnecessary too.",
+    "Teacher sneezes, and you mark your attendance—calm down.",
+    "Attendance so high, they might ask you to start teaching soon.",
+    "You're basically on payroll the way you show up.",
+    "Bro, take a day off, even the attendance sheet needs space.",
+    "You have attendance anxiety like people have commitment issues.",
+    "Chill bro, syllabus won't vanish if you miss one class.",
+    "Even the security guard knows you're always here.",
+    "Your attendance is so good, the system thinks you're a bot.",
+    "They're gonna put your photo on the attendance app's login screen soon."
   ];
 
-  if (percentage < 60) {
+  if (percentage < 70) {
     return lowMessages[Math.floor(Math.random() * lowMessages.length)];
-  } else if (percentage < 85) {
+  } else if (percentage < 80) {
     return mediumMessages[Math.floor(Math.random() * mediumMessages.length)];
   } else {
     return highMessages[Math.floor(Math.random() * highMessages.length)];

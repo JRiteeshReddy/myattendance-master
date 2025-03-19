@@ -116,8 +116,8 @@ const Dashboard = () => {
         </Card>
 
         {attendanceMessage && (
-          <div className="bg-secondary/60 backdrop-blur-xs rounded-lg p-4 mb-8 text-sm text-secondary-foreground border border-secondary animate-slide-up">
-            <p className="italic">{attendanceMessage}</p>
+          <div className="bg-secondary/60 backdrop-blur-xs rounded-lg p-5 mb-8 text-center border border-secondary animate-slide-up">
+            <p className="italic text-lg md:text-xl font-medium text-secondary-foreground">{attendanceMessage}</p>
           </div>
         )}
 

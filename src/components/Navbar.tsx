@@ -13,7 +13,6 @@ const Navbar = () => {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Subjects', path: '/subjects' },
     { name: 'Reports', path: '/reports' },
-    { name: 'Settings', path: '/settings' },
   ];
 
   useEffect(() => {

@@ -11,8 +11,6 @@ const Navbar = () => {
 
   const links = [
     { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Subjects', path: '/subjects' },
-    { name: 'Reports', path: '/reports' },
   ];
 
   useEffect(() => {

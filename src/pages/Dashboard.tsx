@@ -7,8 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { calculatePercentage, getAttendanceMessage, calculateClassesToMiss, calculateClassesToAttend } from '@/lib/attendance';
-import { Link } from 'react-router-dom';
-import { PlusCircle } from 'lucide-react';
 
 const Dashboard = () => {
   const [attendedClasses, setAttendedClasses] = useState('0');
@@ -189,16 +187,6 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-
-        <div className="mt-8 text-center">
-          <p className="text-muted-foreground mb-4">Want to track attendance for specific subjects?</p>
-          <Link to="/subjects">
-            <Button className="bg-app-blue hover:bg-app-blue-dark">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Manage Subjects
-            </Button>
-          </Link>
-        </div>
       </div>
     </div>
   );

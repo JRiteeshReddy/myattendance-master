@@ -1,46 +1,49 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { getAttendanceMessage, calculateClassesToMiss, calculateClassesToAttend } from '@/lib/attendance';
+import { calculatePercentage, getAttendanceMessage, calculateClassesToMiss, calculateClassesToAttend } from '@/lib/attendance';
 import { Link } from 'react-router-dom';
-import { PlusCircle, Percent } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 
 const Dashboard = () => {
-  const [subjects, setSubjects] = useState([]);
+  const [attendedClasses, setAttendedClasses] = useState('0');
+  const [totalClasses, setTotalClasses] = useState('0');
+  const [attendancePercentage, setAttendancePercentage] = useState(0);
   const [attendanceMessage, setAttendanceMessage] = useState('');
-  const [manualPercentage, setManualPercentage] = useState('75');
   const [calculationResult, setCalculationResult] = useState({
     canMiss: 0,
     needToAttend: 0
   });
 
-  // Load subjects from localStorage
-  useEffect(() => {
-    const savedSubjects = localStorage.getItem('subjects');
-    if (savedSubjects) {
-      setSubjects(JSON.parse(savedSubjects));
-    }
-  }, []);
-
   const handleCalculateAttendance = () => {
-    const percentage = parseInt(manualPercentage, 10);
+    const attended = parseInt(attendedClasses, 10);
+    const total = parseInt(totalClasses, 10);
     
-    if (isNaN(percentage) || percentage < 0 || percentage > 100) {
-      toast.error('Please enter a valid percentage between 0 and 100');
+    if (isNaN(attended) || isNaN(total) || attended < 0 || total < 0) {
+      toast.error('Please enter valid numbers for attended and total classes');
       return;
     }
-
-    // Calculate how many classes can be missed or need to be attended
-    // For this calculator, we'll use some example values:
-    // Assuming 20 total classes with the entered percentage for calculations
-    const total = 20;
-    const attended = Math.round((percentage / 100) * total);
     
+    if (attended > total) {
+      toast.error('Attended classes cannot be more than total classes');
+      return;
+    }
+    
+    if (total === 0) {
+      toast.error('Total classes cannot be zero');
+      return;
+    }
+    
+    // Calculate attendance percentage
+    const percentage = calculatePercentage(attended, total);
+    setAttendancePercentage(percentage);
+    
+    // Calculate how many classes can be missed or need to be attended
     const canMiss = calculateClassesToMiss(attended, total);
     const needToAttend = calculateClassesToAttend(attended, total);
     
@@ -68,33 +71,40 @@ const Dashboard = () => {
         <header className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Attendance Calculator</h1>
           <p className="text-muted-foreground">
-            Calculate how many classes you can miss or need to attend
+            Calculate your attendance percentage and plan your classes
           </p>
         </header>
 
         <Card className="mb-8 animate-slide-up">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Enter Attendance Percentage</CardTitle>
+            <CardTitle className="text-lg">Enter Your Attendance</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="manual-percentage">Current Attendance (%)</Label>
-                <div className="relative mt-1.5">
-                  <Input
-                    id="manual-percentage"
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={manualPercentage}
-                    onChange={(e) => setManualPercentage(e.target.value)}
-                    className="pr-10" 
-                    onClick={(e) => (e.target as HTMLInputElement).select()}
-                  />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <Percent className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                </div>
+                <Label htmlFor="attended-classes">Classes Attended</Label>
+                <Input
+                  id="attended-classes"
+                  type="number"
+                  min="0"
+                  value={attendedClasses}
+                  onChange={(e) => setAttendedClasses(e.target.value)}
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                  className="mt-1.5"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="total-classes">Total Classes</Label>
+                <Input
+                  id="total-classes"
+                  type="number"
+                  min="1"
+                  value={totalClasses}
+                  onChange={(e) => setTotalClasses(e.target.value)}
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                  className="mt-1.5"
+                />
               </div>
               
               <Button 
@@ -113,27 +123,27 @@ const Dashboard = () => {
           </div>
         )}
 
-        {(calculationResult.canMiss > 0 || calculationResult.needToAttend > 0) && (
+        {attendancePercentage > 0 && (
           <div className="bg-white rounded-xl shadow-app p-6 animate-slide-up">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col space-y-4">
                 <div className="space-y-1">
                   <p className="text-sm text-muted-foreground">Attendance</p>
-                  <p className="text-2xl font-semibold">{manualPercentage}%</p>
+                  <p className="text-2xl font-semibold">{attendancePercentage}%</p>
                 </div>
                 
                 <div className="space-y-1">
                   <p className="text-sm text-muted-foreground">Status</p>
                   <p className={`text-sm font-medium rounded-full px-2 py-0.5 inline-block ${
-                    parseInt(manualPercentage) >= 75 
+                    attendancePercentage >= 75 
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {parseInt(manualPercentage) >= 75 ? 'Good Standing' : 'Warning'}
+                    {attendancePercentage >= 75 ? 'Good Standing' : 'Warning'}
                   </p>
                 </div>
 
-                {parseInt(manualPercentage) >= 75 ? (
+                {attendancePercentage >= 75 ? (
                   <div className="space-y-1">
                     <p className="text-sm text-muted-foreground">Classes you can miss</p>
                     <p className="text-xl font-medium">
@@ -155,8 +165,8 @@ const Dashboard = () => {
                   <PieChart>
                     <Pie
                       data={[
-                        { name: 'Attended', value: parseInt(manualPercentage) },
-                        { name: 'Missed', value: 100 - parseInt(manualPercentage) }
+                        { name: 'Attended', value: attendancePercentage },
+                        { name: 'Missed', value: 100 - attendancePercentage }
                       ]}
                       cx="50%"
                       cy="50%"
@@ -169,7 +179,7 @@ const Dashboard = () => {
                       label={({ name, percent }) => `${name}: ${Math.round(percent * 100)}%`}
                       labelLine={false}
                     >
-                      <Cell fill={getColorByPercentage(parseInt(manualPercentage))} />
+                      <Cell fill={getColorByPercentage(attendancePercentage)} />
                       <Cell fill="#E5E7EB" />
                     </Pie>
                     <Tooltip />
